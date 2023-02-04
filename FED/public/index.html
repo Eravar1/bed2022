@@ -49,9 +49,8 @@
                                     <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
                                         <i class="icon icon-search"></i>
                                     </a>
-                                    <form role="search" method="get" class="search-box">
-                                        <input class="search-field text search-input" placeholder="Search" type="search"
-                                            oninput="retrieveSearchPossibilities(this.value)">
+                                    <form role="search" method="get" class="search-box" id="searchForm">
+                                        <input class="search-field text search-input" placeholder="Search" type="search" oninput="retrieveSearchPossibilities(this.value)" id="searchInput"/>    
                                     </form>
                                 </div>
                             </div>
@@ -62,7 +61,7 @@
                 </div>
             </div>
             <div class="container" id="searchbox">
-                
+
             </div>
         </div><!--top-content-->
 
@@ -420,6 +419,15 @@
                 }
             })
         }
+
+        function searchInit(){
+            const searchForm = document.getElementById('searchForm');
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                window.location.assign("searchResult.html?search=" + $('#searchInput').val());
+            });
+        }
+        searchInit()
     </script>
 </body>
 

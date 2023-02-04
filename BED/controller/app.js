@@ -134,6 +134,8 @@ app.get("/getImage/:filmid", (req, res) => {
             res.status(500).send({ error: err.message });
         } else {
             if (result) {
+                // var dir = (path.resolve(__dirname,".."))
+                // res.sendFile(path.join(dir + "\\" + result[0].imagepath))
                 res.status(200).type("html");
                 console.log(result[0].imagepath);
                 let data = fs.readFileSync(result[0].imagepath);
@@ -254,8 +256,33 @@ app.post("/login/", function (req, res) {
 });
 
 app.post("/verifyToken/", verifyToken, function (req, res) {
-
     res.status(200).send({ "test":"test" });
+});
+
+// Get details of films by name
+app.get("/search/film/:name", function (req, res) {
+    var name = req.params.name;
+    /**
+     * Gets information for the individual details page for DVDs
+     *
+     * @param (string) first - film name
+     * @param (function) second - callback function handling the reply
+     * @returns (data/null, data/null) - reply from sql database with either the error or result, or neither
+     *
+     * @example (localhost:8081/film/ACADEMY DINOSAUR)
+     * @example {"filmid":"1", "title": "ACADEMY DINOSAUR", "description":"...", "release_year":"2006", "language_id":"1", "rental_duration":"6", "rental_rate":"0.99", "length":"86", "replacement_cost":"20.99", "rating":"PG", "special_features":"Deleted Scenes"}
+     */
+    film.getFilmByName(name, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+        } else {
+            if (result) {
+                res.status(200).send(result);
+            } else {
+                res.status(404).send({ error: "No films found" });
+            }
+        }
+    });
 });
 
 module.exports = app;

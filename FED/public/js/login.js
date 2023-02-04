@@ -15,7 +15,6 @@ form.addEventListener('submit', (e) => {
 $("#login").click(()=>{
     var username = $("#emailLogin").val();
     var password = $("#passwordLogin").val();
-    console.log(username, password)
     login(username, password);
 })
 

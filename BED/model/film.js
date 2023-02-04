@@ -111,6 +111,27 @@ let film = {
                 });
             }
         });
+    },
+    getFilmByName: function (film_id, callback) {
+        var connection = db.getConnection();
+        connection.connect(function (err) {
+            if (err) {
+                return callback(err, null);
+            } else {
+                const sql =
+                    'SELECT film.film_id, film.title, film.rental_rate, film.rating FROM film WHERE title LIKE CONCAT("%", ?, "%") LIMIT 9;';
+                connection.query(sql, [film_id], function (err, result) {
+                    if (err) {
+                        return callback(err, null);
+                    }
+                    if (result.length == 0) {
+                        return callback(null, null);
+                    } else {
+                        return callback(null, result);
+                    }
+                });
+            }
+        });
     }
 };
 module.exports = film;
